@@ -2,7 +2,7 @@
 
 A simple example of the custom ProgressBar with a vertical Divider!
 
-<img src="Previews/Textfield.gif" width="280">
+<img src="Previews/textfield.gif" width="280">
 
 # Using
 ```swift
