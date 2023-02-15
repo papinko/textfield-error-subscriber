@@ -9,7 +9,8 @@ import Foundation
 import Combine
 import SwiftUI
 
-
+// MARK:    TextFiled Subscriber
+//          Subscriber check any changes on TextField and look, whether conditions (allowedSymbols, minLenght, maxLenght) is fulfilled
 class IssueManagerModel : ObservableObject {
     // If a throws appears -> set error
     @Published var textFieldError: TextFieldValidationError? = nil
@@ -34,6 +35,7 @@ class IssueManagerModel : ObservableObject {
     
     var cancellables = Set<AnyCancellable>()
     
+    // Initializing the TextField Subscriber
     init() {
         TextFieldSubscriber()
     }
@@ -50,6 +52,7 @@ class IssueManagerModel : ObservableObject {
                     // no throw -> textError to nil
                     self.textFieldError = nil
                     
+                    // Additionally, check for text length, for the circle delete button on TextField
                     if(text.isEmpty){
                         withAnimation(.easeInOut(duration: 0.35)) {
                             self.isTextFieldClearAllowed = false
@@ -62,6 +65,7 @@ class IssueManagerModel : ObservableObject {
                         return true
                     }
                 } catch {
+                    // if the String Extension "isTextFieldValid" return a throw, the TextFieldValidationError will be assigned
                     withAnimation(.easeInOut(duration: 0.35)) {
                         self.textFieldError = error as? TextFieldValidationError
                     }
@@ -70,6 +74,7 @@ class IssueManagerModel : ObservableObject {
             }
             .sink(receiveValue: { [weak self] (isValid) in
                 withAnimation(.easeInOut(duration: 0.35)) {
+                    // if isValid == true -> the TextFiels has no problems
                     self?.isValid = isValid
                 }
             })
