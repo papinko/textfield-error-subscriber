@@ -15,8 +15,10 @@ struct ContentView: View {
     var body: some View {
         VStack(spacing: 15) {
             
+            // Show the actual allowed symbols for the TextField
             AllowedSymbolsView
             
+            // TextFiled
             DefaulTextfield(placeholder: "test",
                             text: $text,
                             isValid: $isValid,
@@ -24,6 +26,7 @@ struct ContentView: View {
                             maxLenght: 6,
                             allowedSymbols: "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
             
+            // This button should be enabled if the text in the TextField has no problem
             SaveView
         }
         .padding()
@@ -54,31 +57,9 @@ struct ContentView: View {
     }
     
     @ViewBuilder
-    private var MinLenghtView: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Allowed symbols:")
-                .foregroundColor(.black)
-                .font(.title3)
-                .padding(.top, 8)
-            
-            Text("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-                .foregroundColor(.white)
-                .font(.body)
-                .padding(.bottom, 8)
-        }
-        .frame(maxWidth: .infinity)
-        .background() {
-            RoundedRectangle(cornerRadius: 8)
-                .fill(.gray.opacity(0.2))
-                .frame(maxWidth: .infinity)
-                .shadow(radius: 2, x: 2, y: 2)
-        }
-    }
-    
-    @ViewBuilder
     private var SaveView: some View {
         Button {
-            
+            // action
         } label: {
             Text("Save")
                 .foregroundColor(.white)
@@ -92,6 +73,7 @@ struct ContentView: View {
                 .frame(maxWidth: .infinity)
                 .shadow(radius: 2, x: 2, y: 2)
         }
+        // If the Text on the TextField is ok -> make this button a clickable
         .disabled(!isValid)
     }
 }
