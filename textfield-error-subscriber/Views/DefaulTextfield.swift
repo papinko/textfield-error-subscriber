@@ -10,26 +10,39 @@ import SwiftUI
 
 struct DefaulTextfield : View {
     
+    // Placeholder Text of TextField
     @State      var placeholder         : String
+    
+    // The IN/OUT Text of TextField
     @Binding    var text                : String
+    
+    // Is the IN/OUT Text has any issue?
     @Binding    var isValid             : Bool
     
-    // MARK: Properties
+    // Min Text lenght of TextField
     @State var minLenght: Int? = nil
+    
+    // Max Text lenght of TextField
     @State var maxLenght: Int? = nil
+    
+    // The symbols, the is allowed to write into the TextField
     @State var allowedSymbols: String? = nil
     
+    // Initialize a TextFiled Subscriber
     @StateObject private var subscriber = IssueManagerModel()
     
     var body: some View {
         VStack(alignment: .center) {
             
             HStack(alignment: .center) {
+                // Extend the existing TextField control
                 TextField(placeholder, text: $subscriber.value)
                     .TextfieldModifier(roundedCornes: 8, startColor: Color(UIColor.systemGray5), endColor: Color(UIColor.systemGray5) , textColor: Color.black, borderColor: .clear)
                 
+                // Show circle delete button, wenn any Characters was wrote
                 if subscriber.isTextFieldClearAllowed {
                     Button {
+                        // Delete Text from a TextField
                         withAnimation {
                             subscriber.value = ""
                         }
@@ -40,12 +53,14 @@ struct DefaulTextfield : View {
                 }
             }
             
+            // if textFieldError is not a nil -> show the issue text under textField
             if let issue = subscriber.textFieldError {
                 ErrorMessageView(textFieldErrorText: issue)
             }
              
         } // VStack
         .frame(maxWidth: .infinity)
+        // Initialize the subscriber values 
         .onAppear {
             if let min = minLenght {
                 subscriber.minLenght = min
@@ -62,6 +77,7 @@ struct DefaulTextfield : View {
             subscriber.value = text
             subscriber.isValid = isValid
         }
+        // Transfer the isValid-Property to INOUT isValid
         .onChange(of: subscriber.isValid, perform: { newValue in
             withAnimation(.easeInOut(duration: 0.35)) {
                 self.isValid = newValue
@@ -69,6 +85,7 @@ struct DefaulTextfield : View {
         })
     }
     
+    // MARK: Error Message showing View
     struct ErrorMessageView : View {
         
         @State var textFieldErrorText: TextFieldValidationError
@@ -86,11 +103,12 @@ struct DefaulTextfield : View {
     }
 }
 
+// MARK: Types of Issue
 enum TextFieldValidationError: Error, LocalizedError {
     
-    case isTooShort
-    case isTooLong
-    case symbolExluded
+    case isTooShort     // Text of TextFiled is too short
+    case isTooLong      // Text of TextFiled is too long
+    case symbolExluded  // Text of TextFiled contains prohibited symbols
     
     var errorDescription: String?
     {
