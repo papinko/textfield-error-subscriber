@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+// MARK: Setting general properties with an extension
 extension TextField {
     func TextfieldModifier(roundedCornes : CGFloat, startColor : Color, endColor : Color, textColor : Color, borderColor : Color) -> some View {
         self
@@ -23,7 +24,9 @@ extension TextField {
                     .stroke(borderColor, lineWidth: 1.0)
             )
             .shadow(color: borderColor,radius: 1)
+            // Changing the Keyboard Sumbit Button
             .submitLabel(.done)
+            // For a better overview, open the keyboard and move the TextField to the top.
             .ignoresSafeArea(.keyboard, edges: .top)
     }
 }
@@ -31,6 +34,7 @@ extension TextField {
 extension String {
     func isTextFieldValid(excludedSymbols: String, min: Int, max: Int?) throws {
         
+        // Checking of all allowed conditions with a local functions
         try IsInExcludedSymbol(excludedSymbols: excludedSymbols)
         try IsMinLenght(min: min)
         try IsMaxLenght(max: max)
