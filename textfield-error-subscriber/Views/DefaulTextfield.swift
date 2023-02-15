@@ -55,7 +55,7 @@ struct DefaulTextfield : View {
             
             // if textFieldError is not a nil -> show the issue text under textField
             if let issue = subscriber.textFieldError {
-                ErrorMessageView(textFieldErrorText: issue)
+                ErrorMessageView(textFieldErrorText: $subscriber.textFieldError)
             }
              
         } // VStack
@@ -88,17 +88,20 @@ struct DefaulTextfield : View {
     // MARK: Error Message showing View
     struct ErrorMessageView : View {
         
-        @State var textFieldErrorText: TextFieldValidationError
+        @Binding var textFieldErrorText: TextFieldValidationError?
         
         var body: some View {
-            HStack {
-                Text(textFieldErrorText.localizedDescription)
-                    .foregroundColor(.red)
-                    .font(.footnote)
-                
-                Spacer()
+            if let issue = textFieldErrorText {
+                HStack {
+                    
+                    Text(issue.localizedDescription)
+                        .foregroundColor(.red)
+                        .font(.footnote)
+                    
+                    Spacer()
+                }
+                .padding(.leading, 7)
             }
-            .padding(.leading, 7)
         }
     }
 }
